@@ -1,0 +1,16 @@
+# Generated app data
+tasks.json
+streak.txt
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment (if you create one later)
+venv/
+.venv/
+
+# OS/editor junk
+.vscode/
+.DS_Store
+Thumbs.db
