@@ -8,6 +8,13 @@ import calendar
 from datetime import datetime
 import json
 
+# ---- Visual Scaling ----
+import ctypes
+try:
+    ctypes.windll.shcore.SetProcessDpiAwareness(1)
+except Exception:
+    pass
+
 # ---- (Time Settings) ----
 OFFSET_HOURS = -5
 
@@ -39,6 +46,17 @@ ENTRY_FONT  = ("Times New Roman", 11)
 
 # ---- Main Frame ----
 root = tk.Tk()
+
+root.title("PyTask: To-Do List App")
+
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+window_width = int(screen_width * 0.7) # 50% of screen width
+window_height = int(screen_height * 0.65) # 60% of screen height
+
+root.geometry(f"{window_width}x{window_height}")
+
 
 # ---- Style for Progress Bar ----
 style = ttk.Style(root)
