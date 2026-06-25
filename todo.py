@@ -21,7 +21,7 @@ OFFSET_HOURS = -5
 # ---- Settings ----
 # --- Storage for all tasks ----
 tasks = []
-STREAK_FILE = "streak.txt" # file where streaks are saved
+STREAK_FILE = "streak.json" # file where streaks are saved
 
 # functions for our times
 def get_local_datetime():
@@ -608,13 +608,11 @@ streak_label.pack(padx=10, anchor="w")
 
 
 def save_streak():
-    try:
-        with open(STREAK_FILE, "w") as f:
-            f.write(f"{streak}\n")
-            f.write(f"{last_completed_day}\n")
-    except:
-        pass
-
+    data = {"streak": streak, "last_completed_day": str(last_completed_day) if last_completed_day else None}
+    
+    with open(STREAK_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
+    
 def check_streak():
     global streak, last_completed_day
     
@@ -655,17 +653,15 @@ def load_streak():
         return
     
     try:
-        with open(STREAK_FILE, "r") as f:
-            lines = f.readlines()
+        with open(STREAK_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
             
-            streak = int(lines[0].strip())
+            streak = data.get("streak", 0)
             
-            date_str = lines[1].strip()
-            if date_str != "None":
-                last_completed_day = datetime.strptime(date_str, "%Y-%m-%d").date()
-            else:
-                last_completed_day = None
-    except:
+            date_str = data.get("last_completed_day")
+            
+            last_completed_day = datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else None
+    except Exception:
         streak = 0
         last_completed_day = None
 
